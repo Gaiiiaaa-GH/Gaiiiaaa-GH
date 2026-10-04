@@ -1,0 +1,47 @@
+name: Profile cards
+
+# Regenerates the snake and the language card, then force-pushes them to the
+# `output` branch so main's history stays clean.
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Cipher palette: blue snake stealing gold coins
+      - uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/snake-dark.svg?color_snake=#4A86E8&color_dots=#161b22,#5c4a24,#8a6a2c,#c09341,#e5b95c
+            dist/snake-light.svg?color_snake=#2457B8&color_dots=#ebedf0,#f3e3b8,#e5c77a,#c99a3d,#a8782a
+
+      - uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: top-langs
+          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&hide_border=true&bg_color=00000000&title_color=E5B95C&text_color=C9D1D9
+          path: dist/langs-dark.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: top-langs
+          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&hide_border=true&bg_color=00000000&title_color=A8782A&text_color=24292F
+          path: dist/langs-light.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push to the output branch
+        working-directory: dist
+        run: |
+          git init -q -b output
+          git add .
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -qm "Update profile cards"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" output
