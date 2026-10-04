@@ -16,25 +16,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Cipher palette: blue snake stealing gold coins
-      - uses: Platane/snk/svg-only@v3
-        with:
-          github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/snake-dark.svg?color_snake=#4A86E8&color_dots=#161b22,#5c4a24,#8a6a2c,#c09341,#e5b95c
-            dist/snake-light.svg?color_snake=#2457B8&color_dots=#ebedf0,#f3e3b8,#e5c77a,#c99a3d,#a8782a
+      - uses: actions/checkout@v6
+
+      # Sweeps the graph column by column (snk's solver wanders outside the grid)
+      - name: Snake
+        run: python3 .github/scripts/snake.py dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: stats-organization/github-readme-stats-action@v2
         with:
           card: top-langs
-          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&hide_border=true&bg_color=00000000&title_color=E5B95C&text_color=C9D1D9
+          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&locale=fr&hide_border=true&bg_color=00000000&title_color=E5B95C&text_color=C9D1D9
           path: dist/langs-dark.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: stats-organization/github-readme-stats-action@v2
         with:
           card: top-langs
-          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&hide_border=true&bg_color=00000000&title_color=A8782A&text_color=24292F
+          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&locale=fr&hide_border=true&bg_color=00000000&title_color=A8782A&text_color=24292F
           path: dist/langs-light.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
