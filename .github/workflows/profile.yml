@@ -27,14 +27,14 @@ jobs:
       - uses: stats-organization/github-readme-stats-action@v2
         with:
           card: top-langs
-          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&locale=fr&hide_border=true&bg_color=00000000&title_color=E5B95C&text_color=C9D1D9
+          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&hide_border=true&bg_color=00000000&title_color=E5B95C&text_color=C9D1D9
           path: dist/langs-dark.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: stats-organization/github-readme-stats-action@v2
         with:
           card: top-langs
-          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&locale=fr&hide_border=true&bg_color=00000000&title_color=A8782A&text_color=24292F
+          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&hide_border=true&bg_color=00000000&title_color=A8782A&text_color=24292F
           path: dist/langs-light.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
